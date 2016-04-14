@@ -13,7 +13,7 @@
 #include "ftpdir.h"
 
 #define DOWNLOAD_CANCEL_TIMEOUT 30000
-#define READ_BUFFER_SIZE        1024
+#define DEFAULT_READ_BUFSIZE    1024
 
 using namespace std;
 
@@ -50,6 +50,7 @@ public:
     void      setComponents(tstring comp);
     void      setUi(Ui *newUi);
     void      setInternetOptions(InternetOptions opt);
+    void      setOptions(Downloader *d);
     void      setFinishedCallback(FinishedCallback callback);
     void      processMessages();
 
@@ -58,6 +59,7 @@ public:
     bool preserveFtpDirs;
     bool downloadCancelled;
     bool downloadPaused;
+    int  readBufferSize;
 
 protected:
     bool openInternet();

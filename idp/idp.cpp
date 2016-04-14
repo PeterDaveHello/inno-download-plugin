@@ -71,6 +71,7 @@ bool idpGetFileSize(_TCHAR *url, DWORDLONG *size)
 {
     Downloader d;
     d.setInternetOptions(internetOptions);
+    d.setOptions(&downloader);
     d.setMirrorList(&downloader);
     d.addFile(STR(url), _T(""));
     *size = d.getFileSizes();
@@ -90,6 +91,7 @@ bool idpDownloadFile(_TCHAR *url, _TCHAR *filename)
 {
     Downloader d;
     d.setInternetOptions(internetOptions);
+    d.setOptions(&downloader);
     d.setMirrorList(&downloader);
     d.addFile(STR(url), STR(filename));
     return d.downloadFiles();
@@ -313,6 +315,17 @@ DWORD proxyVal(_TCHAR *value)
     return INTERNET_OPEN_TYPE_PRECONFIG;
 }
 
+int bufSizeVal(_TCHAR *value)
+{
+    string val = toansi(tstrlower(STR(value)));
+
+    if(val.compare("default") == 0) return DEFAULT_READ_BUFSIZE;
+    if(val.compare("auto")    == 0) return DEFAULT_READ_BUFSIZE;
+
+    int bufSize = _ttoi(value);
+    return bufSize ? bufSize : DEFAULT_READ_BUFSIZE;
+}
+
 void idpSetInternalOption(_TCHAR *name, _TCHAR *value)
 {
     if(!name)
@@ -329,6 +342,7 @@ void idpSetInternalOption(_TCHAR *name, _TCHAR *value)
     }
     else if(key.compare("stoponerror")      == 0) downloader.stopOnError         = boolVal(value);
     else if(key.compare("preserveftpdirs")  == 0) downloader.preserveFtpDirs     = boolVal(value);
+    else if(key.compare("readbuffersize")   == 0) downloader.readBufferSize      = bufSizeVal(value);
     else if(key.compare("retrybutton")      == 0) ui.hasRetryButton              = boolVal(value);
     else if(key.compare("redrawbackground") == 0) ui.redrawBackground            = boolVal(value);
     else if(key.compare("errordialog")      == 0) ui.errorDlgMode                = dlgVal(value);

@@ -9,6 +9,7 @@ Downloader::Downloader()
     stopOnError         = true;
     ownMsgLoop          = false;
     preserveFtpDirs     = true;
+    readBufferSize      = DEFAULT_READ_BUFSIZE;
     filesSize           = 0;
     downloadedFilesSize = 0;
     ui                  = NULL;
@@ -41,6 +42,13 @@ void Downloader::setInternetOptions(InternetOptions opt)
         NetFile *file = i->second;
         file->url.internetOptions = opt;
     }
+}
+
+void Downloader::setOptions(Downloader *d)
+{
+    stopOnError     = d->stopOnError;
+    preserveFtpDirs = d->preserveFtpDirs;
+    readBufferSize  = d->readBufferSize;
 }
 
 void Downloader::setComponents(tstring comp)
@@ -489,7 +497,7 @@ bool Downloader::checkMirrors(tstring url, bool download/* or get size */)
 
 bool Downloader::downloadFile(NetFile *netFile)
 {
-    BYTE  buffer[READ_BUFFER_SIZE];
+    BYTE  *buffer = new BYTE[readBufferSize];
     DWORD bytesRead;
     File  file;
 
@@ -506,6 +514,7 @@ bool Downloader::downloadFile(NetFile *netFile)
         setMarquee(false, stopOnError ? (netFile->size == FILE_SIZE_UNKNOWN) : false);
         updateStatus(msg(e.what()));
         storeError(msg(e.what()));
+        delete[] buffer;
         return false;
     }
 
@@ -514,6 +523,7 @@ bool Downloader::downloadFile(NetFile *netFile)
         setMarquee(false, stopOnError ? (netFile->size == FILE_SIZE_UNKNOWN) : false);
         updateStatus(msg("Cannot connect"));
         storeError();
+        delete[] buffer;
         return false;
     }
 
@@ -523,6 +533,7 @@ bool Downloader::downloadFile(NetFile *netFile)
         tstring errstr = msg("Cannot create file") + _T(" ") + netFile->name;
         updateStatus(errstr);
         storeError(errstr);
+        delete[] buffer;
         return false;
     }
 
@@ -542,16 +553,18 @@ bool Downloader::downloadFile(NetFile *netFile)
         {
             file.close();
             netFile->close();
+            delete[] buffer;
             return true;
         }
 
-        if(!netFile->read(buffer, READ_BUFFER_SIZE, &bytesRead))
+        if(!netFile->read(buffer, readBufferSize, &bytesRead))
         {
             setMarquee(false, netFile->size == FILE_SIZE_UNKNOWN);
             updateStatus(msg("Download failed"));
             storeError();
             file.close();
             netFile->close();
+            delete[] buffer;
             return false;
         }
 
@@ -582,6 +595,7 @@ bool Downloader::downloadFile(NetFile *netFile)
     netFile->close();
     netFile->downloaded = true;
 
+    delete[] buffer;
     return true;
 }
 
