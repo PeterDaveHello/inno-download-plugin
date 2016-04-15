@@ -416,6 +416,8 @@ bool Downloader::downloadFiles(bool useComponents)
 
                 if(downloadFile(&newFile))
                 {
+                    file->downloaded = newFile.downloaded;
+                    file->bytesDownloaded = newFile.bytesDownloaded;
                     downloadedFilesSize += file->bytesDownloaded;
                     continue;
                 }
