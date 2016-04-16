@@ -60,7 +60,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="wininet.lib"
+				AdditionalDependencies="wininet.lib user32.lib gdi32.lib"
 				LinkIncremental="2"
 				ModuleDefinitionFile="idp.def"
 				GenerateDebugInformation="true"
@@ -136,7 +136,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="wininet.lib"
+				AdditionalDependencies="wininet.lib user32.lib gdi32.lib"
 				LinkIncremental="1"
 				ModuleDefinitionFile="idp.def"
 				GenerateDebugInformation="true"
@@ -215,7 +215,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="wininet.lib"
+				AdditionalDependencies="wininet.lib user32.lib gdi32.lib"
 				LinkIncremental="2"
 				ModuleDefinitionFile="idp.def"
 				GenerateDebugInformation="true"
@@ -291,7 +291,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="wininet.lib"
+				AdditionalDependencies="wininet.lib user32.lib gdi32.lib"
 				LinkIncremental="1"
 				ModuleDefinitionFile="idp.def"
 				GenerateDebugInformation="true"

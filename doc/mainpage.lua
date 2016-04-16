@@ -57,7 +57,7 @@ For updates and support please visit:
 <ul>
   <li><a href="http://mitrichsoftware.wordpress.com/">Website</a></li>
   <li><a href="http://groups.google.com/group/inno-download-plugin">Discussion forum</a></li>
-  <li><a href="https://code.google.com/p/inno-download-plugin/">Source code repository</a></li>
+  <li><a href="http://bitbucket.org/mitrich_k/inno-download-plugin/">Source code repository</a></li>
 </ul>
 Inno Download Plugin &copy;2013-]] .. os.date("%Y") .. [[ Mitrich Software
 <p>
