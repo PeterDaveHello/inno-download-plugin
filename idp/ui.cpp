@@ -207,9 +207,9 @@ void Ui::rightAlignLabel(HWND label, tstring text)
 {
     HDC dc = GetDC(label);
     SelectObject(dc, (HGDIOBJ)controls["LabelFont"]);
-
     SIZE textSize;
     GetTextExtentPoint32(dc, text.c_str(), (int)text.size(), &textSize);
+    ReleaseDC(label,dc);
 
     RECT labelRect;
     GetWindowRect(label, &labelRect);
