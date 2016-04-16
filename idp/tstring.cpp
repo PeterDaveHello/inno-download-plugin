@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <wininet.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include "tstring.h"
@@ -130,4 +131,18 @@ tstring addbackslash(tstring s)
         r.append(_T("\\"));
     
     return r;
+}
+
+tstring encodeurl(tstring url)
+{
+    DWORD buflen = (DWORD)url.length() * 3 + 2;
+    _TCHAR *buf = new _TCHAR[buflen];
+
+    if(InternetCanonicalizeUrl(url.c_str(), buf, &buflen, 0))
+        return tstring(buf);
+    else
+    {
+        TRACE(_T("Error canonicalizing URL: %s"), url.c_str());
+        return url;
+    }
 }

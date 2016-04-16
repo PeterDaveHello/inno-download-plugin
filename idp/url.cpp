@@ -92,7 +92,11 @@ HINTERNET Url::open(HINTERNET internet, const _TCHAR *httpVerb)
         return NULL;
 
     if(service == INTERNET_SERVICE_FTP)
-        filehandle = FtpOpenFile(connection, urlPath, GENERIC_READ, FTP_TRANSFER_TYPE_BINARY | INTERNET_FLAG_RELOAD, NULL);
+    {
+        tstring fullUrl = urlPath;
+        fullUrl += extraInfo;
+        filehandle = FtpOpenFile(connection, fullUrl.c_str(), GENERIC_READ, FTP_TRANSFER_TYPE_BINARY | INTERNET_FLAG_RELOAD, NULL);
+    }
     else
     {
         DWORD flags = INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD | INTERNET_FLAG_KEEP_CONNECTION;

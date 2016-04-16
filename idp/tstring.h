@@ -22,5 +22,6 @@ tstring formatspeed(unsigned long speed, tstring kbs, tstring mbs);
 void    tstringtoset(set<tstring> &stringset, tstring str, _TCHAR sep);
 tstring addslash(tstring s);
 tstring addbackslash(tstring s);
+tstring encodeurl(tstring url);
 
 #define STR(x) x ? x : const_cast<_TCHAR *>(_T(""))
