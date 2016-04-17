@@ -3,6 +3,7 @@
 #define ProgYear GetDateTimeString("yyyy", "", "")
 #define WebSite  "http://mitrichsoftware.wordpress.com"
 #define Forum    "https://groups.google.com/forum/#!forum/inno-download-plugin"
+#define Repo     "http://bitbucket.org/mitrich_k/inno-download-plugin"
 
 [Setup]
 AppName              = {#ProgName}
@@ -23,6 +24,7 @@ OutputDir            = .
 
 [CustomMessages]
 ForumDescription=Support Forum
+SourceRepository=Source code repository
 Documentation   =Documentation
 SourceCode      =Source code
 AddIncludePath  =Add IDP include path to ISPPBuiltins.iss
@@ -81,6 +83,7 @@ Name: "{group}\{#ProgName} {cm:Documentation}";    Filename: "{app}\idp.chm"
 Name: "{group}\Example scripts";                   Filename: "{app}\examples"
 Name: "{group}\{cm:ProgramOnTheWeb,{#ProgName}}";  Filename: "{#WebSite}"
 Name: "{group}\{cm:ForumDescription}";             Filename: "{#Forum}"
+Name: "{group}\{cm:SourceRepository}";             Filename: "{#Repo}"
 Name: "{group}\{cm:UninstallProgram,{#ProgName}}"; Filename: "{uninstallexe}"
 
 [Run]

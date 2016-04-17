@@ -18,7 +18,7 @@ To add download functionality to your installation script:
 <ul>
   <li>Include IDP include file: <code>#include &lt;idp.iss&gt;</code></li>
   <li>For languages other than English, include one or more language files: <code>#include &lt;idplang\Russian.iss&gt;</code></li>
-  <li>Call <a href="idpAddFile, idpAddFileSize.htm">idpAddFile</a> to add files for downloading</li>
+  <li>Call <a href="idpAddFile.htm">idpAddFile</a> to add files for downloading</li>
   <li>Call <a href="idpDownloadAfter.htm">idpDownloadAfter</a></li>
 </ul>
 Example:
@@ -64,12 +64,18 @@ Inno Download Plugin &copy;2013-]] .. os.date("%Y") .. [[ Mitrich Software
 Translations provided by:
 <table>
   <tr><td>Belarusian</td>          <td>pavlushko.m</td></tr>
+  <tr><td>Bulgarian</td>           <td>Венцислав Димитров</td></tr>
   <tr><td>Brazilian Portuguese</td><td>Celio Marcos</td></tr>
+  <tr><td>Czech</td>               <td>Petr Škvor</td></tr>
   <tr><td>Finnish</td>             <td>Jouni Turunen</td></tr>
+  <tr><td>French</td>              <td>Helpful Elephant</td></tr>
   <tr><td>German</td>              <td>fois</td></tr>
+  <tr><td>Hungarian</td>           <td>Laci bá</td></tr>
   <tr><td>Italian</td>             <td>Alex</td></tr>
   <tr><td>Polish</td>              <td>Adam Siwon</td></tr>
   <tr><td>Simplified Chinese</td>  <td>Ivan Yan</td></tr>
+  <tr><td>Slovak</td>              <td>webium</td></tr>
+  <tr><td>Spanish</td>             <td>jfrmemail</td></tr>
 </table>
 </p>
 ]]

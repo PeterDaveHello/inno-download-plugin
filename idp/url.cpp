@@ -246,6 +246,15 @@ retry:
         }
 
         TRACE(_T("Request opened OK"));
+
+#ifdef _DEBUG
+        _TCHAR buf[10000];
+        dwBufSize = sizeof(buf);
+        if(HttpQueryInfo(filehandle, HTTP_QUERY_RAW_HEADERS_CRLF, &buf, &dwBufSize, &dwIndex))
+            TRACE(_T("HTTP_QUERY_RAW_HEADERS_CRLF: %s"), buf);
+        else
+            TRACE(_T("HTTP_QUERY_RAW_HEADERS_CRLF failed: %s"), formatwinerror(GetLastError()).c_str());
+#endif
     }
 
     return filehandle;
