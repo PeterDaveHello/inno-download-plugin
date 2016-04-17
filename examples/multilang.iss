@@ -12,24 +12,32 @@ OutputDir        = userdocs:Inno Setup Examples Output
 [Languages]
 Name: en;    MessagesFile: "compiler:Default.isl"
 ;Name: be;   MessagesFile: "compiler:Languages\Belarusian.isl"
+;Name: bg;   MessagesFile: "compiler:Languages\Bulgarian.isl"
 ;Name: zh;   MessagesFile: "compiler:Languages\ChineseSimplified.isl"
 Name: de;    MessagesFile: "compiler:Languages\German.isl"
+Name: hu;    MessagesFile: "compiler:Languages\Hungarian.isl"
 Name: fi;    MessagesFile: "compiler:Languages\Finnish.isl"
+Name: fr;    MessagesFile: "compiler:Languages\French.isl"
 Name: it;    MessagesFile: "compiler:Languages\Italian.isl"
 Name: pl;    MessagesFile: "compiler:Languages\Polish.isl"
 Name: pt_br; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
 Name: ru;    MessagesFile: "compiler:Languages\Russian.isl"
+Name: es;    MessagesFile: "compiler:Languages\Spanish.isl"
 
 #include <idp.iss>
 ; Language files must be included after idp.iss and after [Languages] section
 ;#include <idplang\Belarusian.iss>
+;#include <idplang\Bulgarian.iss>
 ;#include <idplang\ChineseSimplified.iss>
 #include <idplang\German.iss>
+#include <idplang\Hungarian.iss>
 #include <idplang\Finnish.iss>
+#include <idplang\French.iss>
 #include <idplang\Italian.iss>
 #include <idplang\Polish.iss>
 #include <idplang\BrazilianPortuguese.iss>
 #include <idplang\Russian.iss>
+#include <idplang\Spanish.iss>
 
 ; Let's change some of standard strings:
 [CustomMessages]
