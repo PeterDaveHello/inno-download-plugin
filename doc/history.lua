@@ -29,5 +29,6 @@ history = {
     { "1.5.0", 179, "idpAddFtpDir() function for downloading whole directories with single function call."},
     { "1.5.1", 190, [[Fix: GDI leak (issue 7).<br/>
                       Fix: FTP download of files with # character in file name.<br/>
+                      Fix: Downloading files from mirror.<br/>
                       Bulgarian, Czech, Slovak, Hungarian, and Spanish translations, French translation completed.]] },
 }

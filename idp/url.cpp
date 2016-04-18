@@ -239,7 +239,7 @@ retry:
             }
         }
         
-        if((dwStatusCode != HTTP_STATUS_OK) && (dwStatusCode != HTTP_STATUS_CREATED/*Not sure, if this code can be returned*/))
+        if((dwStatusCode < 200) || (dwStatusCode > 299)) //All 2** status codes
         {
             close();
             throw HTTPError(dwtostr(dwStatusCode));
