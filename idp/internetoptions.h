@@ -32,6 +32,8 @@ public:
     tstring login;
     tstring password;
     int     invalidCert;
+    bool    passiveFtp;
+    bool    useWIRedirect;
     tstring referer;
     tstring userAgent;
     tstring proxyName;

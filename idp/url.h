@@ -42,12 +42,13 @@ public:
     void      disconnect();
     void      close();
     DWORDLONG getSize(HINTERNET internet);
+    void      crack(tstring address);
 
     tstring         urlString;
     InternetOptions internetOptions;
     URL_COMPONENTS  components;
-    HINTERNET      connection;
-    HINTERNET      filehandle;
+    HINTERNET       connection;
+    HINTERNET       filehandle;
 
 protected:
     _TCHAR        *scheme;
