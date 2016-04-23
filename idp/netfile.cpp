@@ -5,6 +5,7 @@ NetFile::NetFile(tstring fileurl, tstring filename, DWORDLONG filesize, tstring 
 {
     name            = filename;
     size            = filesize;
+    destDir         = _T("");
     bytesDownloaded = 0;
     downloaded      = false;
     handle          = NULL;
@@ -17,10 +18,24 @@ NetFile::~NetFile()
 {
 }
 
+DWORDLONG NetFile::getSize(HINTERNET internet)
+{
+    DWORDLONG s = url.getSize(internet);
+    if(name.empty())
+        name = addbackslash(destDir) + filenamefromurl(url.urlString);
+    return s;
+}
+
 bool NetFile::open(HINTERNET internet)
 {
     bytesDownloaded = 0; //NOTE: remove, if download resume will be implemented
-    return (handle = url.open(internet)) != NULL;
+    handle = url.open(internet);
+    
+    //TODO: remove?
+    if(name.empty())
+        name = addbackslash(destDir) + filenamefromurl(url.urlString);
+
+    return handle != NULL;
 }
 
 void NetFile::close()
@@ -37,15 +52,7 @@ bool NetFile::read(void *buffer, DWORD size, DWORD *bytesRead)
 
 tstring NetFile::getShortName()
 {
-    size_t off = name.rfind(_T('\\'));
-
-    if(off == tstring::npos)
-        off = 0;
-    else
-        off++;
-
-    size_t len = name.length() - off;
-    return name.substr(off, len);
+    return filenamefrompath(name);
 }
 
 bool NetFile::selected(set<tstring> comp)

@@ -19,6 +19,7 @@ Downloader::Downloader()
     downloadCancelled   = false;
     downloadPaused      = false;
     finishedCallback    = NULL;
+    destDir             = _T("");
 }
 
 Downloader::~Downloader()
@@ -61,12 +62,30 @@ void Downloader::setFinishedCallback(FinishedCallback callback)
     finishedCallback = callback;
 }
 
+void Downloader::setDestDir(tstring dir, bool forAllFiles)
+{
+    destDir = dir;
+
+    if(forAllFiles)
+        for(map<tstring, NetFile *>::iterator i = files.begin(); i != files.end(); i++)
+        {
+            NetFile *file = i->second;
+            file->destDir = dir;
+        }
+}
+
+tstring Downloader::getDestDir()
+{
+    return destDir;
+}
+
 void Downloader::addFile(tstring url, tstring filename, DWORDLONG size, tstring comp)
 {
     if(!files.count(url))
     {
         files[url] = new NetFile(url, filename, size, comp);
         files[url]->url.internetOptions = internetOptions;
+        files[url]->destDir = destDir;
     }
 }
 
@@ -315,7 +334,7 @@ DWORDLONG Downloader::getFileSizes(bool useComponents)
                 {
                     updateFileName(file);
                     processMessages();
-                    file->size = file->url.getSize(internet);
+                    file->size = file->getSize(internet);
                 }
                 catch(HTTPError &e)
                 {
@@ -476,7 +495,7 @@ bool Downloader::checkMirrors(tstring url, bool download/* or get size */)
         {
             try
             {
-                DWORDLONG size = f.url.getSize(internet);
+                DWORDLONG size = f.getSize(internet);
 
                 if(size != FILE_SIZE_UNKNOWN)
                 {
@@ -528,6 +547,8 @@ bool Downloader::downloadFile(NetFile *netFile)
         delete[] buffer;
         return false;
     }
+
+    TRACE(_T("Creating file %s"), netFile->name.c_str());
 
     if(!file.open(netFile->name))
     {

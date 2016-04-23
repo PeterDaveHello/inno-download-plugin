@@ -6,6 +6,7 @@
 
 extern "C"
 {
+void idpAddF(_TCHAR *url);
 void idpAddFile(_TCHAR *url, _TCHAR *filename);
 void idpAddFileSize(_TCHAR *url, _TCHAR *filename, DWORDLONG size);
 void idpAddFileSize32(_TCHAR *url, _TCHAR *filename, DWORD size);
@@ -15,6 +16,8 @@ void idpAddFileSizeComp32(_TCHAR *url, _TCHAR *filename, DWORD size, _TCHAR *com
 void idpAddMirror(_TCHAR *url, _TCHAR *mirror);
 void idpAddFtpDir(_TCHAR *url, _TCHAR *mask, _TCHAR *destdir, bool recursive);
 void idpAddFtpDirComp(_TCHAR *url, _TCHAR *mask, _TCHAR *destdir, bool recursive, _TCHAR *components);
+void idpSetDestDir(_TCHAR *dir);
+_TCHAR *idpGetDestDir();
 void idpClearFiles();
 int  idpFilesCount();
 int  idpFtpDirsCount();

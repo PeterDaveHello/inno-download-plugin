@@ -1,7 +1,7 @@
 ; Inno Download Plugin
 ; (c)2013-2014 Mitrich Software
 ; http://mitrichsoftware.wordpress.com/
-; https://code.google.com/p/inno-download-plugin/
+; https://bitbucket.org/mitrich_k/inno-download-plugin
 
 #define IDPROOT ExtractFilePath(__PATHFILENAME__)
 
@@ -39,11 +39,14 @@
 Source: "{#IDPDLLDIR}\idp.dll"; Flags: dontcopy;
 
 [Code]
+procedure idpAddF(url: String);                                  external 'idpAddF@files:idp.dll cdecl';
 procedure idpAddFile(url, filename: String);                     external 'idpAddFile@files:idp.dll cdecl';
 procedure idpAddFileComp(url, filename, components: String);     external 'idpAddFileComp@files:idp.dll cdecl';
 procedure idpAddMirror(url, mirror: String);                     external 'idpAddMirror@files:idp.dll cdecl';
 procedure idpAddFtpDir(url, mask, destdir: String; recursive: Boolean); external 'idpAddFtpDir@files:idp.dll cdecl';
 procedure idpAddFtpDirComp(url, mask, destdir: String; recursive: Boolean; components: String); external 'idpAddFtpDirComp@files:idp.dll cdecl';
+procedure idpSetDestDir(dir: String);                            external 'idpSetDestDir@files:idp.dll cdecl';
+function  idpGetDestDir(): String;                               external 'idpGetDestDir@files:idp.dll cdecl';
 procedure idpClearFiles;                                         external 'idpClearFiles@files:idp.dll cdecl';
 function  idpFilesCount: Integer;                                external 'idpFilesCount@files:idp.dll cdecl';
 function  idpFtpDirsCount: Integer;                              external 'idpFtpDirsCount@files:idp.dll cdecl';

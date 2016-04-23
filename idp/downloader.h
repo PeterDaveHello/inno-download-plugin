@@ -27,10 +27,12 @@ public:
     Downloader();
     ~Downloader();
 
-    void      addFile(tstring url, tstring filename, DWORDLONG size = FILE_SIZE_UNKNOWN, tstring comp = _T(""));
+    void      addFile(tstring url, tstring filename = _T(""), DWORDLONG size = FILE_SIZE_UNKNOWN, tstring comp = _T(""));
     void      addFtpDir(tstring url, tstring mask, tstring destdir, bool recursive, tstring comp = _T(""));
     void      addMirror(tstring url, tstring mirror);
     void      setMirrorList(Downloader *d);
+    void      setDestDir(tstring dir, bool forAllFiles = false);
+    tstring   getDestDir();
     void      clearFiles();
     void      clearMirrors();
     void      clearFtpDirs();
@@ -83,6 +85,7 @@ protected:
     multimap<tstring, tstring> mirrors;
     set<tstring>               components;
     list<FtpDir *>             ftpDirs;
+    tstring                    destDir;
     DWORDLONG                  filesSize;
     DWORDLONG                  downloadedFilesSize;
     HINTERNET                  internet;

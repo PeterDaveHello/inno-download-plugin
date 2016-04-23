@@ -7,6 +7,11 @@ Downloader      downloader;
 Ui              ui;
 InternetOptions internetOptions;
 
+void idpAddF(_TCHAR *url)
+{
+    downloader.addFile(STR(url));
+}
+
 void idpAddFile(_TCHAR *url, _TCHAR *filename)
 {
     downloader.addFile(STR(url), STR(filename));
@@ -40,6 +45,17 @@ void idpAddFtpDir(_TCHAR *url, _TCHAR *mask, _TCHAR *destdir, bool recursive)
 void idpAddFtpDirComp(_TCHAR *url, _TCHAR *mask, _TCHAR *destdir, bool recursive, _TCHAR *components)
 {
     downloader.addFtpDir(STR(url), STR(mask), STR(destdir), recursive, components);
+}
+
+void idpSetDestDir(_TCHAR *dir)
+{
+    downloader.setDestDir(STR(dir));
+}
+
+_TCHAR *idpGetDestDir()
+{
+    //NOTE: Not working
+    return const_cast<_TCHAR *>(downloader.getDestDir().c_str());
 }
 
 void idpClearFiles()
