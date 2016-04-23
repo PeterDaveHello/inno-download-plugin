@@ -370,6 +370,8 @@ void idpSetInternalOption(_TCHAR *name, _TCHAR *value)
     else if(key.compare("connecttimeout")   == 0) internetOptions.connectTimeout = timeoutVal(value);
     else if(key.compare("sendtimeout")      == 0) internetOptions.sendTimeout    = timeoutVal(value);
     else if(key.compare("receivetimeout")   == 0) internetOptions.receiveTimeout = timeoutVal(value);
+    else if(key.compare("passiveftp")       == 0) internetOptions.passiveFtp     = boolVal(value);
+    else if(key.compare("usewiredirect")    == 0) internetOptions.useWIRedirect  = boolVal(value);
     else if(key.compare("username")         == 0) internetOptions.login          = STR(value);
     else if(key.compare("password")         == 0) internetOptions.password       = STR(value);
     else if(key.compare("proxymode")        == 0) internetOptions.accessType     = proxyVal(value);

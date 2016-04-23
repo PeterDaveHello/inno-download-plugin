@@ -6,6 +6,13 @@
 
 Url::Url(tstring address)
 {
+    crack(address);
+    connection = NULL;
+    filehandle = NULL;
+}
+
+void Url::crack(tstring address)
+{
     urlString = address;
     int len = (int)urlString.length();
 
@@ -38,9 +45,6 @@ Url::Url(tstring address)
     case INTERNET_SCHEME_HTTP : service = INTERNET_SERVICE_HTTP; break;
     case INTERNET_SCHEME_HTTPS: service = INTERNET_SERVICE_HTTP; break;
     }
-
-    connection = NULL;
-    filehandle = NULL;
 }
 
 Url::~Url()
@@ -57,7 +61,7 @@ Url::~Url()
 
 HINTERNET Url::connect(HINTERNET internet)
 {
-    DWORD flags = (service == INTERNET_SERVICE_FTP) ? INTERNET_FLAG_PASSIVE : 0;
+    DWORD flags = ((service == INTERNET_SERVICE_FTP) && internetOptions.passiveFtp) ? INTERNET_FLAG_PASSIVE : 0;
 
     TRACE(_T("Connecting to %s://%s:%d..."), components.lpszScheme, hostName, components.nPort);
     //TRACE(_T("    Username=\"%s\", Password=\"%s\" (Global)"), internetOptions.login.c_str(), internetOptions.password.c_str());
@@ -86,7 +90,10 @@ HINTERNET Url::connect(HINTERNET internet)
 HINTERNET Url::open(HINTERNET internet, const _TCHAR *httpVerb)
 {
     LPCTSTR acceptTypes[] = { _T("*/*"), NULL };
-    bool proxyAuthSet = false;
+    bool proxyAuthSet;
+
+redirect:
+    proxyAuthSet = false;
 
     if(!connect(internet))
         return NULL;
@@ -99,7 +106,7 @@ HINTERNET Url::open(HINTERNET internet, const _TCHAR *httpVerb)
     }
     else
     {
-        DWORD flags = INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD | INTERNET_FLAG_KEEP_CONNECTION;
+        DWORD flags = INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD | INTERNET_FLAG_KEEP_CONNECTION | (internetOptions.useWIRedirect ? 0 : INTERNET_FLAG_NO_AUTO_REDIRECT);
 
         if(components.nScheme == INTERNET_SCHEME_HTTPS)
         {
@@ -238,6 +245,25 @@ retry:
                 }
             }
         }
+
+        //Manual redirect
+        if((dwStatusCode == HTTP_STATUS_MOVED          ) ||
+           (dwStatusCode == HTTP_STATUS_REDIRECT       ) ||
+           (dwStatusCode == HTTP_STATUS_REDIRECT_METHOD))
+        {
+            _TCHAR redirurl[4096];
+            dwBufSize = sizeof(redirurl);
+
+            if(HttpQueryInfo(filehandle, HTTP_QUERY_LOCATION, &redirurl, &dwBufSize, &dwIndex))
+            {
+                TRACE(_T("Redirecting to %s"), redirurl);
+                crack(redirurl);
+                close();
+                goto redirect;
+            }
+            else
+                TRACE(_T("Redirect: getting Location header failed"));
+        }
         
         if((dwStatusCode < 200) || (dwStatusCode > 299)) //All 2** status codes
         {
@@ -246,15 +272,16 @@ retry:
         }
 
         TRACE(_T("Request opened OK"));
-
+/*
 #ifdef _DEBUG
         _TCHAR buf[10000];
         dwBufSize = sizeof(buf);
         if(HttpQueryInfo(filehandle, HTTP_QUERY_RAW_HEADERS_CRLF, &buf, &dwBufSize, &dwIndex))
-            TRACE(_T("HTTP_QUERY_RAW_HEADERS_CRLF: %s"), buf);
+            TRACE(_T("HTTP_QUERY_RAW_HEADERS_CRLF:\n%s"), buf);
         else
             TRACE(_T("HTTP_QUERY_RAW_HEADERS_CRLF failed: %s"), formatwinerror(GetLastError()).c_str());
 #endif
+*/
     }
 
     return filehandle;
