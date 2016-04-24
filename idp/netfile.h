@@ -15,6 +15,7 @@ public:
     void    close();
     bool    read(void *buffer, DWORD size, DWORD *bytesRead);
     tstring getShortName();
+    void    updateName();
     bool    selected(set<tstring> comp);
     DWORDLONG getSize(HINTERNET internet);
 

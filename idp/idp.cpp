@@ -47,9 +47,9 @@ void idpAddFtpDirComp(_TCHAR *url, _TCHAR *mask, _TCHAR *destdir, bool recursive
     downloader.addFtpDir(STR(url), STR(mask), STR(destdir), recursive, components);
 }
 
-void idpSetDestDir(_TCHAR *dir)
+void idpSetDestDir(_TCHAR *dir, bool forAllFiles)
 {
-    downloader.setDestDir(STR(dir));
+    downloader.setDestDir(STR(dir), forAllFiles);
 }
 
 _TCHAR *idpGetDestDir()

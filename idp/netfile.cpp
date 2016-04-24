@@ -21,8 +21,7 @@ NetFile::~NetFile()
 DWORDLONG NetFile::getSize(HINTERNET internet)
 {
     DWORDLONG s = url.getSize(internet);
-    if(name.empty())
-        name = addbackslash(destDir) + filenamefromurl(url.urlString);
+    updateName();
     return s;
 }
 
@@ -31,9 +30,7 @@ bool NetFile::open(HINTERNET internet)
     bytesDownloaded = 0; //NOTE: remove, if download resume will be implemented
     handle = url.open(internet);
     
-    //TODO: remove?
-    if(name.empty())
-        name = addbackslash(destDir) + filenamefromurl(url.urlString);
+    updateName();
 
     return handle != NULL;
 }
@@ -75,4 +72,10 @@ bool NetFile::selected(set<tstring> comp)
     }
 
     return false;
+}
+
+void NetFile::updateName()
+{
+    if(name.empty())
+        name = addbackslash(destDir) + filenamefromurl(url.urlString);
 }

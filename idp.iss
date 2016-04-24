@@ -1,5 +1,5 @@
 ; Inno Download Plugin
-; (c)2013-2014 Mitrich Software
+; (c)2013-2016 Mitrich Software
 ; http://mitrichsoftware.wordpress.com/
 ; https://bitbucket.org/mitrich_k/inno-download-plugin
 
@@ -45,7 +45,7 @@ procedure idpAddFileComp(url, filename, components: String);     external 'idpAd
 procedure idpAddMirror(url, mirror: String);                     external 'idpAddMirror@files:idp.dll cdecl';
 procedure idpAddFtpDir(url, mask, destdir: String; recursive: Boolean); external 'idpAddFtpDir@files:idp.dll cdecl';
 procedure idpAddFtpDirComp(url, mask, destdir: String; recursive: Boolean; components: String); external 'idpAddFtpDirComp@files:idp.dll cdecl';
-procedure idpSetDestDir(dir: String);                            external 'idpSetDestDir@files:idp.dll cdecl';
+procedure idpSetDestDir(dir: String; forAllFiles: Boolean);      external 'idpSetDestDir@files:idp.dll cdecl';
 function  idpGetDestDir(): String;                               external 'idpGetDestDir@files:idp.dll cdecl';
 procedure idpClearFiles;                                         external 'idpClearFiles@files:idp.dll cdecl';
 function  idpFilesCount: Integer;                                external 'idpFilesCount@files:idp.dll cdecl';
