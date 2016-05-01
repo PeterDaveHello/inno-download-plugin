@@ -1,3 +1,6 @@
+#include <shlwapi.h>
+#include <stdlib.h>
+#include <time.h>
 #include "netfile.h"
 #include "trace.h"
 
@@ -29,7 +32,7 @@ bool NetFile::open(HINTERNET internet)
 {
     bytesDownloaded = 0; //NOTE: remove, if download resume will be implemented
     handle = url.open(internet);
-    
+
     updateName();
 
     return handle != NULL;
@@ -77,5 +80,32 @@ bool NetFile::selected(set<tstring> comp)
 void NetFile::updateName()
 {
     if(name.empty())
-        name = addbackslash(destDir) + filenamefromurl(url.urlString);
+    {
+        tstring filename = filenamefromurl(url.urlString);
+
+        if(filename.empty())
+        {
+            TRACE(_T("Cannot create filename from %s, generating random name."), url.urlString.c_str());
+            filename = generateUniqueName();
+        }
+
+        name = addbackslash(destDir) + filename;
+    }
+}
+
+tstring NetFile::generateUniqueName()
+{
+    srand((unsigned)time(NULL));
+    tstring fname;
+    tstring fpath;
+    int fno = rand();
+
+    do
+    {
+        fname = tstrprintf(_T("downloadedfile-%08x"), fno);
+        fpath = addbackslash(destDir) + fname;
+        fno++;
+    }while(PathFileExists(fpath.c_str()));
+
+    return fname;
 }

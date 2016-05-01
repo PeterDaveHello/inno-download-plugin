@@ -28,4 +28,7 @@ public:
     bool         downloaded;
     HINTERNET    handle;
     tstring      mirrorUsed;
+
+protected:
+    tstring generateUniqueName();
 };
