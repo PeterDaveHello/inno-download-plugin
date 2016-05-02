@@ -69,6 +69,7 @@ Source: "misc\Setup.ico";               DestDir: "{app}\source\misc";           
 Source: "misc\*.lua";                   DestDir: "{app}\source\misc";            Components: src
 Source: "misc\*.bat";                   DestDir: "{app}\source\misc";            Components: src
 Source: "COPYING.txt";                  DestDir: "{app}\source";                 Components: src
+Source: "README.md";                    DestDir: "{app}\source";                 Components: src
 
 Source: "tests\*.iss";                        DestDir: "{app}\source\tests";            Components: src
 Source: "tests\statictest\statictest.vcproj"; DestDir: "{app}\source\tests\statictest"; Components: src

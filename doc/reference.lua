@@ -2,8 +2,9 @@ group "Functions"
 
 idpAddFile = {
     proto = [[
+procedure idpAddF(url: String);{note-1}
 procedure idpAddFile(url, filename: String);
-procedure idpAddFileSize(url, filename: String; size: Int64{note-1});
+procedure idpAddFileSize(url, filename: String; size: Int64{note-2});
 procedure idpAddFileComp(url, filename, components: String);
 procedure idpAddFileSizeComp(url, filename: String; size: Int64; components: String);
 ]],
@@ -12,15 +13,16 @@ procedure idpAddFileSizeComp(url, filename: String; size: Int64; components: Str
               (this will override global user name and password, specified with @idpSetLogin function).]],
     params = {
         { "url",      "Full file URL" },
-        { "filename", "File name on the local disk." },
+        { "filename", "File name on the local disk. If not specified, you must call @idpSetDestDir to specify destignation directory for files." },
         { "size",     "Size of file. If not specified, it will be determined when download begins." },
-        { "components{note-2}", [[A space separated list of component names, telling IDP to which components the file belongs.
+        { "components{note-3}", [[A space separated list of component names, telling IDP to which components the file belongs.
                                 A file without a components parameter is always downloaded.]] }
     },
-    notes = { "<tt>size</tt> parameter is <tt>Dword</tt> for ANSI Inno Setup",
+    notes = { "This form of function requires @idpSetDestDir to be called first",
+              "<tt>size</tt> parameter is <tt>Dword</tt> for ANSI Inno Setup",
               "@idpDownloadFiles and @idpGetFilesSize ignores this parameter"
         },
-    seealso  = { "idpAddFtpDir", "idpClearFiles", "idpDownloadAfter", "idpDownloadFiles", "idpSetLogin" },
+    seealso  = { "idpAddFtpDir", "idpClearFiles", "idpDownloadAfter", "idpDownloadFiles", "idpSetDestDir", "idpSetLogin" },
 --  keywords = { "login", "password", "components" },
     keywords = { "file", "files", "components" },
     example  = [[
@@ -34,6 +36,34 @@ end;
 ]]
 }
 
+idpSetDestDir = {
+    proto  = "procedure idpSetDestDir(dir: String; forAllFiles: Boolean);",
+    desc   = "This function used in conjuction with @idpAddF",
+    params = {
+        { "dir",         "Directory for downloaded files" },
+        { "forAllFiles", "If <tt>True</tt>, overrides all previous calls to idpSetDestDir"}
+    },
+    seealso  = { "idpAddF" },
+    keywords = { "destignation", "directory" },
+    example  = [[
+procedure <b>InitializeWizard</b>();
+begin
+  idpSetDestDir(ExpandConstant('{src}'), false);
+  idpAddF('http://www.abcdef.com/file1.xyz');
+  idpAddF('http://www.abcdef.com/file2.xyz');
+  idpAddF('http://www.abcdef.com/file3.xyz');
+  
+  idpSetDestDir(ExpandConstant('{src}\subdir'), false);
+  idpAddF('http://www.abcdef.com/file4.xyz');
+  idpAddF('http://www.abcdef.com/file5.xyz');
+  idpAddF('http://www.abcdef.com/file6.xyz');
+
+  idpDownloadAfter(wpReady);
+end;
+]]
+}
+
+idpAddF        = idpAddFile
 idpAddFileSize = idpAddFile
 idpAddFileComp = idpAddFile
 idpAddFileSizeComp = idpAddFile
@@ -203,6 +233,7 @@ idpSetOption = {
                               Can be set to <tt>Infinite</tt> to disable this timer]],                                    "</tt>System default{note-3}<tt>" },
         { "SendTimeout",      "Time-out value, in milliseconds, to send a request",                                       "</tt>System default<tt>" },
         { "ReceiveTimeout",   "Time-out value, in milliseconds, to receive a response to a request",                      "</tt>System default<tt>" },
+        { "PassiveFtp",       "Use passive FTP semantics.",                                                               "1"},
         { "Username",         'User name for HTTP/HTTPS and FTP. See also @idpSetLogin',                                  "" },
         { "Password",         'Password for HTTP/HTTPS and FTP. See also @idpSetLogin',                                   "" },
         { "ProxyMode",        'See @idpSetProxyMode',                                                                     "Auto" },
