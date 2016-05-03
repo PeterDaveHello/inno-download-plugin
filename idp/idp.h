@@ -17,7 +17,7 @@ void idpAddMirror(_TCHAR *url, _TCHAR *mirror);
 void idpAddFtpDir(_TCHAR *url, _TCHAR *mask, _TCHAR *destdir, bool recursive);
 void idpAddFtpDirComp(_TCHAR *url, _TCHAR *mask, _TCHAR *destdir, bool recursive, _TCHAR *components);
 void idpSetDestDir(_TCHAR *dir, bool forAllFiles);
-_TCHAR *idpGetDestDir();
+void idpGetDestDir(_TCHAR *destdir);
 void idpClearFiles();
 int  idpFilesCount();
 int  idpFtpDirsCount();

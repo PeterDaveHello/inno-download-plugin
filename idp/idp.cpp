@@ -52,10 +52,9 @@ void idpSetDestDir(_TCHAR *dir, bool forAllFiles)
     downloader.setDestDir(STR(dir), forAllFiles);
 }
 
-_TCHAR *idpGetDestDir()
+void idpGetDestDir(_TCHAR *destdir)
 {
-    //NOTE: Not working
-    return const_cast<_TCHAR *>(downloader.getDestDir().c_str());
+    _tcscpy(destdir, downloader.getDestDir().c_str());
 }
 
 void idpClearFiles()

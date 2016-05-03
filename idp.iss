@@ -46,7 +46,7 @@ procedure idpAddMirror(url, mirror: String);                     external 'idpAd
 procedure idpAddFtpDir(url, mask, destdir: String; recursive: Boolean); external 'idpAddFtpDir@files:idp.dll cdecl';
 procedure idpAddFtpDirComp(url, mask, destdir: String; recursive: Boolean; components: String); external 'idpAddFtpDirComp@files:idp.dll cdecl';
 procedure idpSetDestDir(dir: String; forAllFiles: Boolean);      external 'idpSetDestDir@files:idp.dll cdecl';
-function  idpGetDestDir(): String;                               external 'idpGetDestDir@files:idp.dll cdecl';
+procedure idpGetDestDir(dir: String);                            external 'idpGetDestDir@files:idp.dll cdecl';
 procedure idpClearFiles;                                         external 'idpClearFiles@files:idp.dll cdecl';
 function  idpFilesCount: Integer;                                external 'idpFilesCount@files:idp.dll cdecl';
 function  idpFtpDirsCount: Integer;                              external 'idpFtpDirsCount@files:idp.dll cdecl';
