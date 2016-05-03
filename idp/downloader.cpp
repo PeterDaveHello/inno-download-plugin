@@ -185,6 +185,47 @@ bool Downloader::fileDownloaded(tstring url)
     return files[url]->downloaded;
 }
 
+bool Downloader::startEnumFiles()
+{
+    enumIter = files.begin();
+    return enumIter != files.end();
+}
+
+bool Downloader::enumerateFiles(_TCHAR *filename, int fileType)
+{
+    if(enumIter == files.end())
+        return false;
+    else
+    {
+        NetFile *file = enumIter->second;
+
+        if(fileType == IDP_DOWNLOADED) //Skip not downloaded
+            while(!file->downloaded)
+            {
+                enumIter++;
+                
+                if(enumIter == files.end())
+                    return false;
+
+                file = enumIter->second;
+            }
+        else if(fileType == IDP_NOT_DOWNLOADED) //Skip downloaded
+            while(file->downloaded)
+            {
+                enumIter++;
+                
+                if(enumIter == files.end())
+                    return false;
+
+                file = enumIter->second;
+            }
+
+        _tcscpy(filename, file->name.c_str());
+        enumIter++;
+        return true;
+    }
+}
+
 bool Downloader::openInternet()
 {
     if(internet)

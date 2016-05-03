@@ -43,7 +43,7 @@ idpSetDestDir = {
         { "dir",         "Directory for downloaded files" },
         { "forAllFiles", "If <tt>True</tt>, overrides all previous calls to idpSetDestDir"}
     },
-    seealso  = { "idpAddF" },
+    seealso  = { "idpAddF", "idpGetFileList" },
     keywords = { "destignation", "directory" },
     example  = [[
 procedure <b>InitializeWizard</b>();
@@ -110,7 +110,7 @@ begin
     end;
 end;
 ]],
-    seealso = { "idpFileDownloaded" }
+    seealso = { "idpFileDownloaded", "idpGetFileList" }
 }
 
 idpFileDownloaded = {
@@ -120,7 +120,17 @@ idpFileDownloaded = {
         { "url", "Full file URL" },
     },
     returns = "<tt>True</tt> if file was successfully downloaded, <tt>False</tt> otherwise",
-    seealso = { "idpFilesDownloaded" }
+    seealso = { "idpFilesDownloaded", "idpGetFileList" }
+}
+
+idpGetFileList = {
+    proto = "procedure idpGetFileList(var fileList: TStrings);",
+    desc  = "Description...",
+    params = {
+        { "fileList", "File list......"}
+    },
+    seealso = { "idpAddF", "idpSetDestDir" },
+    keywords = { "file list"}
 }
 
 idpDownloadFile = {
@@ -418,7 +428,21 @@ var IDPForm: TIdpForm;
     keywords = { "TIdpForm", "IDPForm", "controls" }
 }
 
-group "Macros"
+group "Macros and Constants"
+
+IDP_ALL = {
+    title = "IDP_ALL, IDP_DOWNLOADED, IDP_NOT_DOWNLOADED",
+    proto = [[
+const IDP_ALL            = 0;
+      IDP_DOWNLOADED     = 1;
+      IDP_NOT_DOWNLOADED = 2;
+]],
+    desc = "Description...",
+    seealso = { "idpGetFileList" }
+}
+
+IDP_DOWNLOADED     = IDP_ALL
+IDP_NOT_DOWNLOADED = IDP_ALL
 
 IDP_VER = {
     title = "IDP_VER, IDP_VER_STR, IDP_VER_MAJOR, IDP_VER_MINOR, IDP_VER_REV, IDP_VER_BUILD",

@@ -15,6 +15,10 @@
 #define DOWNLOAD_CANCEL_TIMEOUT 30000
 #define DEFAULT_READ_BUFSIZE    1024
 
+#define IDP_ALL            0
+#define IDP_DOWNLOADED     1
+#define IDP_NOT_DOWNLOADED 2
+
 using namespace std;
 
 class Downloader;
@@ -47,6 +51,8 @@ public:
     bool      filesDownloaded();
     bool      ftpDirsProcessed();
     bool      fileDownloaded(tstring url);
+    bool      startEnumFiles();
+    bool      enumerateFiles(_TCHAR *filename, int fileType);
     DWORD     getLastError();
     tstring   getLastErrorStr();
     void      setComponents(tstring comp);
@@ -97,6 +103,7 @@ protected:
     HANDLE                     downloadThread;
     FinishedCallback           finishedCallback;
     MSG                        windowsMsg;
+    map<tstring, NetFile *>::iterator enumIter;
 
     friend void downloadThreadProc(void *param);
     friend class Ui;

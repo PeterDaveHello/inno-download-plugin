@@ -23,6 +23,8 @@ int  idpFilesCount();
 int  idpFtpDirsCount();
 bool idpFilesDownloaded();
 bool idpFileDownloaded(_TCHAR *url);
+bool idpStartEnumFiles();
+bool idpEnumFiles(_TCHAR *filename, int fileType);
 bool idpGetFileSize(_TCHAR *url, DWORDLONG *size);
 bool idpGetFilesSize(DWORDLONG *size);
 bool idpGetFileSize32(_TCHAR *url, DWORD *size);

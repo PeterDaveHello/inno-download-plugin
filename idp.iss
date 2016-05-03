@@ -52,6 +52,8 @@ function  idpFilesCount: Integer;                                external 'idpFi
 function  idpFtpDirsCount: Integer;                              external 'idpFtpDirsCount@files:idp.dll cdecl';
 function  idpFileDownloaded(url: String): Boolean;               external 'idpFileDownloaded@files:idp.dll cdecl';
 function  idpFilesDownloaded: Boolean;                           external 'idpFilesDownloaded@files:idp.dll cdecl';
+function  idpStartEnumFiles: Boolean;                            external 'idpStartEnumFiles@files:idp.dll cdecl';
+function  idpEnumFiles(filename: String; fileType: Integer): Boolean; external 'idpEnumFiles@files:idp.dll cdecl';
 function  idpDownloadFile(url, filename: String): Boolean;       external 'idpDownloadFile@files:idp.dll cdecl';
 function  idpDownloadFiles: Boolean;                             external 'idpDownloadFiles@files:idp.dll cdecl';
 function  idpDownloadFilesComp: Boolean;                         external 'idpDownloadFilesComp@files:idp.dll cdecl';
@@ -116,6 +118,10 @@ type TIdpForm = record
 var IDPForm   : TIdpForm;
     IDPOptions: TIdpOptions;
 
+const IDP_ALL            = 0;
+      IDP_DOWNLOADED     = 1;
+      IDP_NOT_DOWNLOADED = 2;
+
 function StrToBool(value: String): Boolean;
 var s: String;
 begin
@@ -178,6 +184,21 @@ begin
     end
     else
         idpSetInternalOption(name, value);
+end;
+
+procedure idpGetFileList(var FileList: TStringList; fileType: Integer);
+var filename: String;
+    r: Boolean;
+begin
+    idpStartEnumFiles();
+
+    while true do
+    begin
+        SetLength(filename, 260);
+        r := idpEnumFiles(filename, fileType);
+        if not r then break;
+        FileList.Append(filename);
+    end;
 end;
 
 procedure idpShowDetails(show: Boolean);

@@ -83,6 +83,16 @@ bool idpFileDownloaded(_TCHAR *url)
     return downloader.fileDownloaded(STR(url));
 }
 
+bool idpStartEnumFiles()
+{
+    return downloader.startEnumFiles();
+}
+
+bool idpEnumFiles(_TCHAR *filename, int fileType)
+{
+    return downloader.enumerateFiles(filename, fileType);
+}
+
 bool idpGetFileSize(_TCHAR *url, DWORDLONG *size)
 {
     Downloader d;
