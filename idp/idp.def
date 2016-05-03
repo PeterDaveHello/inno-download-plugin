@@ -20,6 +20,7 @@ idpEnumFiles
 idpGetFileSize
 idpGetFilesSize
 idpDownloadFile
+idpDownloadFileDir
 idpDownloadFiles
 idpDownloadFilesComp
 idpDownloadFilesCompUi

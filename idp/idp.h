@@ -30,6 +30,7 @@ bool idpGetFilesSize(DWORDLONG *size);
 bool idpGetFileSize32(_TCHAR *url, DWORD *size);
 bool idpGetFilesSize32(DWORD *size);
 bool idpDownloadFile(_TCHAR *url, _TCHAR *filename);
+bool idpDownloadFileDir(_TCHAR *url, _TCHAR *destdir, _TCHAR *outname);
 bool idpDownloadFiles();
 bool idpDownloadFilesComp();
 bool idpDownloadFilesCompUi();

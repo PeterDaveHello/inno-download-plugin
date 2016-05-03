@@ -135,13 +135,35 @@ idpGetFileList = {
 
 idpDownloadFile = {
     proto = "function idpDownloadFile(url, filename: String): Boolean; ",
-    desc  = "Immediately download given file, without UI indication. Returns when file downloaded.",
+    desc  = [[Immediately download given file, without UI indication. Returns when file downloaded.
+              If you want to keep original filename, returned from download URL, you can use @idpDownloadFileDir
+              form of this function.]],
     params = {    
         { "url",      "Full file URL." },
         { "filename", "File name on the local disk." }
     },
     returns = "<tt>True</tt> if file was successfully downloaded, <tt>False</tt> otherwise",
-    seealso = { "idpDownloadFiles" }
+    seealso = { "idpDownloadFiles", "idpDownloadFileDir" }
+}
+
+idpDownloadFileDir = {
+    proto = "function idpDownloadFileDir(url, destdir, outfilename: String): Boolean; ",
+    desc  = [[Immediately download given file, without UI indication. Returns when file downloaded.
+              Downloaded file name returned in <tt>outfilename</tt>, which must have length at least 260 characters
+              (use <code>SetLength(outfilename, 260);</code>)]],
+    params = {    
+        { "url",         "Full file URL." },
+        { "destdir",     "Destignation directory" },
+        { "outfilename", "Downloaded file name will be returned here"}
+    },
+    returns = "<tt>True</tt> if file was successfully downloaded, <tt>False</tt> otherwise",
+    seealso = { "idpDownloadFiles", "idpDownloadFile" },
+    example = [[
+var outFileName: String;
+//...
+  SetLength(OutFileName, 260);
+  idpDownloadFileDir('http://www.jrsoftware.org/download.php/is.exe?site=1', ExpandConstant('{tmp}'), outFileName);
+]]
 }
 
 idpDownloadFiles = {
@@ -149,7 +171,7 @@ idpDownloadFiles = {
     desc    = [[Immediately download all files, previously added with @idpAddFile procedure, without UI indication. Returns when all files downloaded.
               This function always downloads all files, ignoring component selection.]],
     returns = idpFilesDownloaded.returns,
-    seealso = { "idpDownloadFilesComp", "idpDownloadFile", "idpDownloadAfter" }
+    seealso = { "idpDownloadFilesComp", "idpDownloadFile", "idpDownloadFileDir", "idpDownloadAfter" }
 }
 
 idpDownloadFilesComp = {

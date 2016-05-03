@@ -123,6 +123,22 @@ bool idpDownloadFile(_TCHAR *url, _TCHAR *filename)
     return d.downloadFiles();
 }
 
+bool idpDownloadFileDir(_TCHAR *url, _TCHAR *destdir, _TCHAR *outname)
+{
+    Downloader d;
+    d.setInternetOptions(internetOptions);
+    d.setOptions(&downloader);
+    d.setMirrorList(&downloader);
+    d.setDestDir(STR(destdir));
+    d.addFile(STR(url));
+    bool res = d.downloadFiles();
+
+    d.startEnumFiles();
+    d.enumerateFiles(outname, IDP_DOWNLOADED);
+
+    return res;
+}
+
 bool idpDownloadFiles()
 {
     downloader.ownMsgLoop = false;

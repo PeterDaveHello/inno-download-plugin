@@ -55,6 +55,7 @@ function  idpFilesDownloaded: Boolean;                           external 'idpFi
 function  idpStartEnumFiles: Boolean;                            external 'idpStartEnumFiles@files:idp.dll cdecl';
 function  idpEnumFiles(filename: String; fileType: Integer): Boolean; external 'idpEnumFiles@files:idp.dll cdecl';
 function  idpDownloadFile(url, filename: String): Boolean;       external 'idpDownloadFile@files:idp.dll cdecl';
+function  idpDownloadFileDir(url, destdir, outname: String): Boolean; external 'idpDownloadFileDir@files:idp.dll cdecl';
 function  idpDownloadFiles: Boolean;                             external 'idpDownloadFiles@files:idp.dll cdecl';
 function  idpDownloadFilesComp: Boolean;                         external 'idpDownloadFilesComp@files:idp.dll cdecl';
 function  idpDownloadFilesCompUi: Boolean;                       external 'idpDownloadFilesCompUi@files:idp.dll cdecl';
