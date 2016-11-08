@@ -61,5 +61,7 @@ protected:
 HWND uiMainWindow();
 
 #define f2i(x) (_isnan(x) ? 0 : (int)(x))
+#define i2d(x) ((x == 0) ? FLT_MIN : (double)x)
+#define nonzero(x) ((x == 0.0) ? FLT_MIN : (double)x)
 
 extern "C" void idpReportError();

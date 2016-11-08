@@ -79,13 +79,13 @@ void Ui::setProgressInfo(DWORDLONG totalSize, DWORDLONG totalDownloaded, DWORDLO
 {
     if(!(totalSize == FILE_SIZE_UNKNOWN))
     {
-        double totalPercents = 100.0 / ((double)totalSize / (double)totalDownloaded);
+        double totalPercents = 100.0 / nonzero((double)totalSize / i2d(totalDownloaded));
         setProgressBarPos(controls["TotalProgressBar"], f2i(totalPercents));
     }
 
     if(!(fileSize == FILE_SIZE_UNKNOWN))
     {
-        double filePercents  = 100.0 / ((double)fileSize / (double)fileDownloaded);
+        double filePercents  = 100.0 / nonzero((double)fileSize / i2d(fileDownloaded));
         setProgressBarPos(controls["FileProgressBar"], f2i(filePercents));
     }
 }
