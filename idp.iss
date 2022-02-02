@@ -1,7 +1,7 @@
 ; Inno Download Plugin
-; (c)2013-2016 Mitrich Software
+; (c)2013-2014 Mitrich Software
 ; http://mitrichsoftware.wordpress.com/
-; https://bitbucket.org/mitrich_k/inno-download-plugin
+; https://code.google.com/p/inno-download-plugin/
 
 #define IDPROOT ExtractFilePath(__PATHFILENAME__)
 
@@ -39,23 +39,17 @@
 Source: "{#IDPDLLDIR}\idp.dll"; Flags: dontcopy;
 
 [Code]
-procedure idpAddF(url: String);                                  external 'idpAddF@files:idp.dll cdecl';
 procedure idpAddFile(url, filename: String);                     external 'idpAddFile@files:idp.dll cdecl';
 procedure idpAddFileComp(url, filename, components: String);     external 'idpAddFileComp@files:idp.dll cdecl';
 procedure idpAddMirror(url, mirror: String);                     external 'idpAddMirror@files:idp.dll cdecl';
 procedure idpAddFtpDir(url, mask, destdir: String; recursive: Boolean); external 'idpAddFtpDir@files:idp.dll cdecl';
 procedure idpAddFtpDirComp(url, mask, destdir: String; recursive: Boolean; components: String); external 'idpAddFtpDirComp@files:idp.dll cdecl';
-procedure idpSetDestDir(dir: String; forAllFiles: Boolean);      external 'idpSetDestDir@files:idp.dll cdecl';
-procedure idpGetDestDir(dir: String);                            external 'idpGetDestDir@files:idp.dll cdecl';
 procedure idpClearFiles;                                         external 'idpClearFiles@files:idp.dll cdecl';
 function  idpFilesCount: Integer;                                external 'idpFilesCount@files:idp.dll cdecl';
 function  idpFtpDirsCount: Integer;                              external 'idpFtpDirsCount@files:idp.dll cdecl';
 function  idpFileDownloaded(url: String): Boolean;               external 'idpFileDownloaded@files:idp.dll cdecl';
 function  idpFilesDownloaded: Boolean;                           external 'idpFilesDownloaded@files:idp.dll cdecl';
-function  idpStartEnumFiles: Boolean;                            external 'idpStartEnumFiles@files:idp.dll cdecl';
-function  idpEnumFiles(filename: String; fileType: Integer): Boolean; external 'idpEnumFiles@files:idp.dll cdecl';
 function  idpDownloadFile(url, filename: String): Boolean;       external 'idpDownloadFile@files:idp.dll cdecl';
-function  idpDownloadFileDir(url, destdir, outname: String): Boolean; external 'idpDownloadFileDir@files:idp.dll cdecl';
 function  idpDownloadFiles: Boolean;                             external 'idpDownloadFiles@files:idp.dll cdecl';
 function  idpDownloadFilesComp: Boolean;                         external 'idpDownloadFilesComp@files:idp.dll cdecl';
 function  idpDownloadFilesCompUi: Boolean;                       external 'idpDownloadFilesCompUi@files:idp.dll cdecl';
@@ -119,10 +113,6 @@ type TIdpForm = record
 var IDPForm   : TIdpForm;
     IDPOptions: TIdpOptions;
 
-const IDP_ALL            = 0;
-      IDP_DOWNLOADED     = 1;
-      IDP_NOT_DOWNLOADED = 2;
-
 function StrToBool(value: String): Boolean;
 var s: String;
 begin
@@ -185,21 +175,6 @@ begin
     end
     else
         idpSetInternalOption(name, value);
-end;
-
-procedure idpGetFileList(var FileList: TStringList; fileType: Integer);
-var filename: String;
-    r: Boolean;
-begin
-    idpStartEnumFiles();
-
-    while true do
-    begin
-        SetLength(filename, 260);
-        r := idpEnumFiles(filename, fileType);
-        if not r then break;
-        FileList.Append(filename);
-    end;
 end;
 
 procedure idpShowDetails(show: Boolean);

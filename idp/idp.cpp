@@ -7,11 +7,6 @@ Downloader      downloader;
 Ui              ui;
 InternetOptions internetOptions;
 
-void idpAddF(_TCHAR *url)
-{
-    downloader.addFile(STR(url));
-}
-
 void idpAddFile(_TCHAR *url, _TCHAR *filename)
 {
     downloader.addFile(STR(url), STR(filename));
@@ -47,16 +42,6 @@ void idpAddFtpDirComp(_TCHAR *url, _TCHAR *mask, _TCHAR *destdir, bool recursive
     downloader.addFtpDir(STR(url), STR(mask), STR(destdir), recursive, components);
 }
 
-void idpSetDestDir(_TCHAR *dir, bool forAllFiles)
-{
-    downloader.setDestDir(STR(dir), forAllFiles);
-}
-
-void idpGetDestDir(_TCHAR *destdir)
-{
-    _tcscpy(destdir, downloader.getDestDir().c_str());
-}
-
 void idpClearFiles()
 {
     downloader.clearFiles();
@@ -80,16 +65,6 @@ bool idpFilesDownloaded()
 bool idpFileDownloaded(_TCHAR *url)
 {
     return downloader.fileDownloaded(STR(url));
-}
-
-bool idpStartEnumFiles()
-{
-    return downloader.startEnumFiles();
-}
-
-bool idpEnumFiles(_TCHAR *filename, int fileType)
-{
-    return downloader.enumerateFiles(filename, fileType);
 }
 
 bool idpGetFileSize(_TCHAR *url, DWORDLONG *size)
@@ -120,22 +95,6 @@ bool idpDownloadFile(_TCHAR *url, _TCHAR *filename)
     d.setMirrorList(&downloader);
     d.addFile(STR(url), STR(filename));
     return d.downloadFiles();
-}
-
-bool idpDownloadFileDir(_TCHAR *url, _TCHAR *destdir, _TCHAR *outname)
-{
-    Downloader d;
-    d.setInternetOptions(internetOptions);
-    d.setOptions(&downloader);
-    d.setMirrorList(&downloader);
-    d.setDestDir(STR(destdir));
-    d.addFile(STR(url));
-    bool res = d.downloadFiles();
-
-    d.startEnumFiles();
-    d.enumerateFiles(outname, IDP_DOWNLOADED);
-
-    return res;
 }
 
 bool idpDownloadFiles()
@@ -395,8 +354,6 @@ void idpSetInternalOption(_TCHAR *name, _TCHAR *value)
     else if(key.compare("connecttimeout")   == 0) internetOptions.connectTimeout = timeoutVal(value);
     else if(key.compare("sendtimeout")      == 0) internetOptions.sendTimeout    = timeoutVal(value);
     else if(key.compare("receivetimeout")   == 0) internetOptions.receiveTimeout = timeoutVal(value);
-    else if(key.compare("passiveftp")       == 0) internetOptions.passiveFtp     = boolVal(value);
-    else if(key.compare("usewiredirect")    == 0) internetOptions.useWIRedirect  = boolVal(value);
     else if(key.compare("username")         == 0) internetOptions.login          = STR(value);
     else if(key.compare("password")         == 0) internetOptions.password       = STR(value);
     else if(key.compare("proxymode")        == 0) internetOptions.accessType     = proxyVal(value);

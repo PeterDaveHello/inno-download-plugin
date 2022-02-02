@@ -19,7 +19,6 @@ Downloader::Downloader()
     downloadCancelled   = false;
     downloadPaused      = false;
     finishedCallback    = NULL;
-    destDir             = _T("");
 }
 
 Downloader::~Downloader()
@@ -62,30 +61,12 @@ void Downloader::setFinishedCallback(FinishedCallback callback)
     finishedCallback = callback;
 }
 
-void Downloader::setDestDir(tstring dir, bool forAllFiles)
-{
-    destDir = dir;
-
-    if(forAllFiles)
-        for(map<tstring, NetFile *>::iterator i = files.begin(); i != files.end(); i++)
-        {
-            NetFile *file = i->second;
-            file->destDir = dir;
-        }
-}
-
-tstring Downloader::getDestDir()
-{
-    return destDir;
-}
-
 void Downloader::addFile(tstring url, tstring filename, DWORDLONG size, tstring comp)
 {
     if(!files.count(url))
     {
         files[url] = new NetFile(url, filename, size, comp);
         files[url]->url.internetOptions = internetOptions;
-        files[url]->destDir = destDir;
     }
 }
 
@@ -183,47 +164,6 @@ bool Downloader::ftpDirsProcessed()
 bool Downloader::fileDownloaded(tstring url)
 {
     return files[url]->downloaded;
-}
-
-bool Downloader::startEnumFiles()
-{
-    enumIter = files.begin();
-    return enumIter != files.end();
-}
-
-bool Downloader::enumerateFiles(_TCHAR *filename, int fileType)
-{
-    if(enumIter == files.end())
-        return false;
-    else
-    {
-        NetFile *file = enumIter->second;
-
-        if(fileType == IDP_DOWNLOADED) //Skip not downloaded
-            while(!file->downloaded)
-            {
-                enumIter++;
-                
-                if(enumIter == files.end())
-                    return false;
-
-                file = enumIter->second;
-            }
-        else if(fileType == IDP_NOT_DOWNLOADED) //Skip downloaded
-            while(file->downloaded)
-            {
-                enumIter++;
-                
-                if(enumIter == files.end())
-                    return false;
-
-                file = enumIter->second;
-            }
-
-        _tcscpy(filename, file->name.c_str());
-        enumIter++;
-        return true;
-    }
 }
 
 bool Downloader::openInternet()
@@ -375,7 +315,7 @@ DWORDLONG Downloader::getFileSizes(bool useComponents)
                 {
                     updateFileName(file);
                     processMessages();
-                    file->size = file->getSize(internet);
+                    file->size = file->url.getSize(internet);
                 }
                 catch(HTTPError &e)
                 {
@@ -536,7 +476,7 @@ bool Downloader::checkMirrors(tstring url, bool download/* or get size */)
         {
             try
             {
-                DWORDLONG size = f.getSize(internet);
+                DWORDLONG size = f.url.getSize(internet);
 
                 if(size != FILE_SIZE_UNKNOWN)
                 {
@@ -588,8 +528,6 @@ bool Downloader::downloadFile(NetFile *netFile)
         delete[] buffer;
         return false;
     }
-
-    TRACE(_T("Creating file %s"), netFile->name.c_str());
 
     if(!file.open(netFile->name))
     {
@@ -685,8 +623,8 @@ void Downloader::updateSpeed(NetFile *file, Timer *timer)
 {
     if(ui)
     {
-        double speed = (double)file->bytesDownloaded / nonzero((double)timer->totalElapsed() / 1000.0);
-        double rtime = (double)(filesSize - (downloadedFilesSize + file->bytesDownloaded)) / nonzero(speed) * 1000.0;
+        double speed = (double)file->bytesDownloaded / ((double)timer->totalElapsed() / 1000.0);
+        double rtime = (double)(filesSize - (downloadedFilesSize + file->bytesDownloaded)) / speed * 1000.0;
         
         if((filesSize == FILE_SIZE_UNKNOWN) || ((downloadedFilesSize + file->bytesDownloaded) > filesSize))
             ui->setSpeedInfo(f2i(speed));

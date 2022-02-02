@@ -6,7 +6,6 @@
 
 extern "C"
 {
-void idpAddF(_TCHAR *url);
 void idpAddFile(_TCHAR *url, _TCHAR *filename);
 void idpAddFileSize(_TCHAR *url, _TCHAR *filename, DWORDLONG size);
 void idpAddFileSize32(_TCHAR *url, _TCHAR *filename, DWORD size);
@@ -16,21 +15,16 @@ void idpAddFileSizeComp32(_TCHAR *url, _TCHAR *filename, DWORD size, _TCHAR *com
 void idpAddMirror(_TCHAR *url, _TCHAR *mirror);
 void idpAddFtpDir(_TCHAR *url, _TCHAR *mask, _TCHAR *destdir, bool recursive);
 void idpAddFtpDirComp(_TCHAR *url, _TCHAR *mask, _TCHAR *destdir, bool recursive, _TCHAR *components);
-void idpSetDestDir(_TCHAR *dir, bool forAllFiles);
-void idpGetDestDir(_TCHAR *destdir);
 void idpClearFiles();
 int  idpFilesCount();
 int  idpFtpDirsCount();
 bool idpFilesDownloaded();
 bool idpFileDownloaded(_TCHAR *url);
-bool idpStartEnumFiles();
-bool idpEnumFiles(_TCHAR *filename, int fileType);
 bool idpGetFileSize(_TCHAR *url, DWORDLONG *size);
 bool idpGetFilesSize(DWORDLONG *size);
 bool idpGetFileSize32(_TCHAR *url, DWORD *size);
 bool idpGetFilesSize32(DWORD *size);
 bool idpDownloadFile(_TCHAR *url, _TCHAR *filename);
-bool idpDownloadFileDir(_TCHAR *url, _TCHAR *destdir, _TCHAR *outname);
 bool idpDownloadFiles();
 bool idpDownloadFilesComp();
 bool idpDownloadFilesCompUi();

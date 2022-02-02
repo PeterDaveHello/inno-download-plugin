@@ -17,7 +17,7 @@
 #define TIMEOUT_INFINITE 0xFFFFFFFF
 #define TIMEOUT_DEFAULT  0xFFFFFFFE
 
-#define IDP_USER_AGENT _T("InnoDownloadPlugin/1.6")
+#define IDP_USER_AGENT _T("InnoDownloadPlugin/1.5")
 
 class InternetOptions
 {
@@ -32,8 +32,6 @@ public:
     tstring login;
     tstring password;
     int     invalidCert;
-    bool    passiveFtp;
-    bool    useWIRedirect;
     tstring referer;
     tstring userAgent;
     tstring proxyName;

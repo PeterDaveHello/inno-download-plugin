@@ -2,7 +2,6 @@ body
 {
     background-color: white;
     font-family: tahoma, sans-serif, arial;
-    font-size: 12px;
 }
 
 h2, h3
@@ -30,8 +29,7 @@ pre.proto
 table, th, td
 {
     border: 1px solid #c0c0c0;
-    padding: 2px;
-    font-size: 12px;
+    padding: 2px
 }
 
 table

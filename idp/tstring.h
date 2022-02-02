@@ -23,7 +23,5 @@ void    tstringtoset(set<tstring> &stringset, tstring str, _TCHAR sep);
 tstring addslash(tstring s);
 tstring addbackslash(tstring s);
 tstring encodeurl(tstring url);
-tstring filenamefrompath(tstring url);
-tstring filenamefromurl(tstring url);
 
 #define STR(x) x ? x : const_cast<_TCHAR *>(_T(""))

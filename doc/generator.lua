@@ -119,9 +119,9 @@ function writePage(page, title)
         prn("<dt>Parameters:</dt><dd><p><table>\n");
         for i, param in ipairs(page.params) do
             if i == 1 then
-                prnl("  <tr><td><tt>", param[1], "</tt></td><td class=\"wide\">", param[2], "</td></tr>\n")
+                prn("  <tr><td><tt>", param[1], "</tt></td><td class=\"wide\">", param[2], "</td></tr>\n")
             else
-                prnl("  <tr><td><tt>", param[1], "</tt></td><td>", param[2], "</td></tr>\n")
+                prn("  <tr><td><tt>", param[1], "</tt></td><td>", param[2], "</td></tr>\n")
             end
         end
         prn("</table></p></dd>\n")

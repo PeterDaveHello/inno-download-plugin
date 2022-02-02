@@ -1,6 +1,5 @@
 LIBRARY	"idp"
 EXPORTS
-idpAddF
 idpAddFile
 idpAddFileSize
 idpAddFileComp
@@ -8,19 +7,14 @@ idpAddFileSizeComp
 idpAddMirror
 idpAddFtpDir
 idpAddFtpDirComp
-idpSetDestDir
-idpGetDestDir
 idpClearFiles
 idpFilesCount
 idpFtpDirsCount
 idpFilesDownloaded
 idpFileDownloaded
-idpStartEnumFiles
-idpEnumFiles
 idpGetFileSize
 idpGetFilesSize
 idpDownloadFile
-idpDownloadFileDir
 idpDownloadFiles
 idpDownloadFilesComp
 idpDownloadFilesCompUi

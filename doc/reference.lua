@@ -2,9 +2,8 @@ group "Functions"
 
 idpAddFile = {
     proto = [[
-procedure idpAddF(url: String);{note-1}
 procedure idpAddFile(url, filename: String);
-procedure idpAddFileSize(url, filename: String; size: Int64{note-2});
+procedure idpAddFileSize(url, filename: String; size: Int64{note-1});
 procedure idpAddFileComp(url, filename, components: String);
 procedure idpAddFileSizeComp(url, filename: String; size: Int64; components: String);
 ]],
@@ -13,16 +12,15 @@ procedure idpAddFileSizeComp(url, filename: String; size: Int64; components: Str
               (this will override global user name and password, specified with @idpSetLogin function).]],
     params = {
         { "url",      "Full file URL" },
-        { "filename", "File name on the local disk. If not specified, you must call @idpSetDestDir to specify destignation directory for files." },
+        { "filename", "File name on the local disk." },
         { "size",     "Size of file. If not specified, it will be determined when download begins." },
-        { "components{note-3}", [[A space separated list of component names, telling IDP to which components the file belongs.
+        { "components{note-2}", [[A space separated list of component names, telling IDP to which components the file belongs.
                                 A file without a components parameter is always downloaded.]] }
     },
-    notes = { "This form of function requires @idpSetDestDir to be called first",
-              "<tt>size</tt> parameter is <tt>Dword</tt> for ANSI Inno Setup",
+    notes = { "<tt>size</tt> parameter is <tt>Dword</tt> for ANSI Inno Setup",
               "@idpDownloadFiles and @idpGetFilesSize ignores this parameter"
         },
-    seealso  = { "idpAddFtpDir", "idpClearFiles", "idpDownloadAfter", "idpDownloadFiles", "idpSetDestDir", "idpSetLogin" },
+    seealso  = { "idpAddFtpDir", "idpClearFiles", "idpDownloadAfter", "idpDownloadFiles", "idpSetLogin" },
 --  keywords = { "login", "password", "components" },
     keywords = { "file", "files", "components" },
     example  = [[
@@ -36,34 +34,6 @@ end;
 ]]
 }
 
-idpSetDestDir = {
-    proto  = "procedure idpSetDestDir(dir: String; forAllFiles: Boolean);",
-    desc   = "This function used in conjuction with @idpAddF",
-    params = {
-        { "dir",         "Directory for downloaded files" },
-        { "forAllFiles", "If <tt>True</tt>, overrides all previous calls to idpSetDestDir"}
-    },
-    seealso  = { "idpAddF", "idpGetFileList" },
-    keywords = { "destignation", "directory" },
-    example  = [[
-procedure <b>InitializeWizard</b>();
-begin
-  idpSetDestDir(ExpandConstant('{src}'), false);
-  idpAddF('http://www.abcdef.com/file1.xyz');
-  idpAddF('http://www.abcdef.com/file2.xyz');
-  idpAddF('http://www.abcdef.com/file3.xyz');
-  
-  idpSetDestDir(ExpandConstant('{src}\subdir'), false);
-  idpAddF('http://www.abcdef.com/file4.xyz');
-  idpAddF('http://www.abcdef.com/file5.xyz');
-  idpAddF('http://www.abcdef.com/file6.xyz');
-
-  idpDownloadAfter(wpReady);
-end;
-]]
-}
-
-idpAddF        = idpAddFile
 idpAddFileSize = idpAddFile
 idpAddFileComp = idpAddFile
 idpAddFileSizeComp = idpAddFile
@@ -110,7 +80,7 @@ begin
     end;
 end;
 ]],
-    seealso = { "idpFileDownloaded", "idpGetFileList" }
+    seealso = { "idpFileDownloaded" }
 }
 
 idpFileDownloaded = {
@@ -120,50 +90,18 @@ idpFileDownloaded = {
         { "url", "Full file URL" },
     },
     returns = "<tt>True</tt> if file was successfully downloaded, <tt>False</tt> otherwise",
-    seealso = { "idpFilesDownloaded", "idpGetFileList" }
-}
-
-idpGetFileList = {
-    proto = "procedure idpGetFileList(var fileList: TStrings);",
-    desc  = "Description...",
-    params = {
-        { "fileList", "File list......"}
-    },
-    seealso = { "idpAddF", "idpSetDestDir" },
-    keywords = { "file list"}
+    seealso = { "idpFilesDownloaded" }
 }
 
 idpDownloadFile = {
     proto = "function idpDownloadFile(url, filename: String): Boolean; ",
-    desc  = [[Immediately download given file, without UI indication. Returns when file downloaded.
-              If you want to keep original filename, returned from download URL, you can use @idpDownloadFileDir
-              form of this function.]],
+    desc  = "Immediately download given file, without UI indication. Returns when file downloaded.",
     params = {    
         { "url",      "Full file URL." },
         { "filename", "File name on the local disk." }
     },
     returns = "<tt>True</tt> if file was successfully downloaded, <tt>False</tt> otherwise",
-    seealso = { "idpDownloadFiles", "idpDownloadFileDir" }
-}
-
-idpDownloadFileDir = {
-    proto = "function idpDownloadFileDir(url, destdir, outfilename: String): Boolean; ",
-    desc  = [[Immediately download given file, without UI indication. Returns when file downloaded.
-              Downloaded file name returned in <tt>outfilename</tt>, which must have length at least 260 characters
-              (use <code>SetLength(outfilename, 260);</code>)]],
-    params = {    
-        { "url",         "Full file URL." },
-        { "destdir",     "Destignation directory" },
-        { "outfilename", "Downloaded file name will be returned here"}
-    },
-    returns = "<tt>True</tt> if file was successfully downloaded, <tt>False</tt> otherwise",
-    seealso = { "idpDownloadFiles", "idpDownloadFile" },
-    example = [[
-var outFileName: String;
-//...
-  SetLength(OutFileName, 260);
-  idpDownloadFileDir('http://www.jrsoftware.org/download.php/is.exe?site=1', ExpandConstant('{tmp}'), outFileName);
-]]
+    seealso = { "idpDownloadFiles" }
 }
 
 idpDownloadFiles = {
@@ -171,7 +109,7 @@ idpDownloadFiles = {
     desc    = [[Immediately download all files, previously added with @idpAddFile procedure, without UI indication. Returns when all files downloaded.
               This function always downloads all files, ignoring component selection.]],
     returns = idpFilesDownloaded.returns,
-    seealso = { "idpDownloadFilesComp", "idpDownloadFile", "idpDownloadFileDir", "idpDownloadAfter" }
+    seealso = { "idpDownloadFilesComp", "idpDownloadFile", "idpDownloadAfter" }
 }
 
 idpDownloadFilesComp = {
@@ -265,7 +203,6 @@ idpSetOption = {
                               Can be set to <tt>Infinite</tt> to disable this timer]],                                    "</tt>System default{note-3}<tt>" },
         { "SendTimeout",      "Time-out value, in milliseconds, to send a request",                                       "</tt>System default<tt>" },
         { "ReceiveTimeout",   "Time-out value, in milliseconds, to receive a response to a request",                      "</tt>System default<tt>" },
-        { "PassiveFtp",       "Use passive FTP semantics.",                                                               "1"},
         { "Username",         'User name for HTTP/HTTPS and FTP. See also @idpSetLogin',                                  "" },
         { "Password",         'Password for HTTP/HTTPS and FTP. See also @idpSetLogin',                                   "" },
         { "ProxyMode",        'See @idpSetProxyMode',                                                                     "Auto" },
@@ -450,21 +387,7 @@ var IDPForm: TIdpForm;
     keywords = { "TIdpForm", "IDPForm", "controls" }
 }
 
-group "Macros and Constants"
-
-IDP_ALL = {
-    title = "IDP_ALL, IDP_DOWNLOADED, IDP_NOT_DOWNLOADED",
-    proto = [[
-const IDP_ALL            = 0;
-      IDP_DOWNLOADED     = 1;
-      IDP_NOT_DOWNLOADED = 2;
-]],
-    desc = "Description...",
-    seealso = { "idpGetFileList" }
-}
-
-IDP_DOWNLOADED     = IDP_ALL
-IDP_NOT_DOWNLOADED = IDP_ALL
+group "Macros"
 
 IDP_VER = {
     title = "IDP_VER, IDP_VER_STR, IDP_VER_MAJOR, IDP_VER_MINOR, IDP_VER_REV, IDP_VER_BUILD",

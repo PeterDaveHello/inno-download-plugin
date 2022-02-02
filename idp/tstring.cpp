@@ -146,29 +146,3 @@ tstring encodeurl(tstring url)
         return url;
     }
 }
-
-tstring filenamefrompath(tstring path)
-{
-    size_t off = path.rfind(_T('\\'));
-
-    if(off == tstring::npos)
-        off = 0;
-    else
-        off++;
-
-    size_t len = path.length() - off;
-    return path.substr(off, len);
-}
-
-tstring filenamefromurl(tstring url)
-{
-    size_t off = url.rfind(_T('/'));
-
-    if(off == tstring::npos)
-        off = 0;
-    else
-        off++;
-
-    size_t len = url.length() - off;
-    return url.substr(off, len);
-}

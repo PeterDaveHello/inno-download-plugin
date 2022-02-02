@@ -15,10 +15,6 @@
 #define DOWNLOAD_CANCEL_TIMEOUT 30000
 #define DEFAULT_READ_BUFSIZE    1024
 
-#define IDP_ALL            0
-#define IDP_DOWNLOADED     1
-#define IDP_NOT_DOWNLOADED 2
-
 using namespace std;
 
 class Downloader;
@@ -31,12 +27,10 @@ public:
     Downloader();
     ~Downloader();
 
-    void      addFile(tstring url, tstring filename = _T(""), DWORDLONG size = FILE_SIZE_UNKNOWN, tstring comp = _T(""));
+    void      addFile(tstring url, tstring filename, DWORDLONG size = FILE_SIZE_UNKNOWN, tstring comp = _T(""));
     void      addFtpDir(tstring url, tstring mask, tstring destdir, bool recursive, tstring comp = _T(""));
     void      addMirror(tstring url, tstring mirror);
     void      setMirrorList(Downloader *d);
-    void      setDestDir(tstring dir, bool forAllFiles = false);
-    tstring   getDestDir();
     void      clearFiles();
     void      clearMirrors();
     void      clearFtpDirs();
@@ -51,8 +45,6 @@ public:
     bool      filesDownloaded();
     bool      ftpDirsProcessed();
     bool      fileDownloaded(tstring url);
-    bool      startEnumFiles();
-    bool      enumerateFiles(_TCHAR *filename, int fileType);
     DWORD     getLastError();
     tstring   getLastErrorStr();
     void      setComponents(tstring comp);
@@ -91,7 +83,6 @@ protected:
     multimap<tstring, tstring> mirrors;
     set<tstring>               components;
     list<FtpDir *>             ftpDirs;
-    tstring                    destDir;
     DWORDLONG                  filesSize;
     DWORDLONG                  downloadedFilesSize;
     HINTERNET                  internet;
@@ -103,7 +94,6 @@ protected:
     HANDLE                     downloadThread;
     FinishedCallback           finishedCallback;
     MSG                        windowsMsg;
-    map<tstring, NetFile *>::iterator enumIter;
 
     friend void downloadThreadProc(void *param);
     friend class Ui;

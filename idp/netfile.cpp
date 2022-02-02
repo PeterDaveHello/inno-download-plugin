@@ -1,6 +1,3 @@
-#include <shlwapi.h>
-#include <stdlib.h>
-#include <time.h>
 #include "netfile.h"
 #include "trace.h"
 
@@ -8,7 +5,6 @@ NetFile::NetFile(tstring fileurl, tstring filename, DWORDLONG filesize, tstring 
 {
     name            = filename;
     size            = filesize;
-    destDir         = _T("");
     bytesDownloaded = 0;
     downloaded      = false;
     handle          = NULL;
@@ -21,21 +17,10 @@ NetFile::~NetFile()
 {
 }
 
-DWORDLONG NetFile::getSize(HINTERNET internet)
-{
-    DWORDLONG s = url.getSize(internet);
-    updateName();
-    return s;
-}
-
 bool NetFile::open(HINTERNET internet)
 {
     bytesDownloaded = 0; //NOTE: remove, if download resume will be implemented
-    handle = url.open(internet);
-
-    updateName();
-
-    return handle != NULL;
+    return (handle = url.open(internet)) != NULL;
 }
 
 void NetFile::close()
@@ -52,7 +37,15 @@ bool NetFile::read(void *buffer, DWORD size, DWORD *bytesRead)
 
 tstring NetFile::getShortName()
 {
-    return filenamefrompath(name);
+    size_t off = name.rfind(_T('\\'));
+
+    if(off == tstring::npos)
+        off = 0;
+    else
+        off++;
+
+    size_t len = name.length() - off;
+    return name.substr(off, len);
 }
 
 bool NetFile::selected(set<tstring> comp)
@@ -75,37 +68,4 @@ bool NetFile::selected(set<tstring> comp)
     }
 
     return false;
-}
-
-void NetFile::updateName()
-{
-    if(name.empty())
-    {
-        tstring filename = filenamefromurl(url.urlString);
-
-        if(filename.empty())
-        {
-            TRACE(_T("Cannot create filename from %s, generating random name."), url.urlString.c_str());
-            filename = generateUniqueName();
-        }
-
-        name = addbackslash(destDir) + filename;
-    }
-}
-
-tstring NetFile::generateUniqueName()
-{
-    srand((unsigned)time(NULL));
-    tstring fname;
-    tstring fpath;
-    int fno = rand();
-
-    do
-    {
-        fname = tstrprintf(_T("downloadedfile-%08x"), fno);
-        fpath = addbackslash(destDir) + fname;
-        fno++;
-    }while(PathFileExists(fpath.c_str()));
-
-    return fname;
 }

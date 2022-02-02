@@ -5,8 +5,6 @@ InternetOptions::InternetOptions(tstring lgn, tstring pass, int invCert)
     login         = lgn;
     password      = pass;
     invalidCert   = invCert;
-    passiveFtp    = true;
-    useWIRedirect = false;
     referer       = _T("");
     userAgent     = IDP_USER_AGENT;
     proxyName     = _T("");
