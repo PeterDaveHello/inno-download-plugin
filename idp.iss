@@ -36,7 +36,7 @@
 #define IDP_VER_STR GetFileVersion(IDPDLLDIR + "\idp.dll")
 
 [Files]
-Source: "{#IDPDLLDIR}\idp.dll"; Flags: dontcopy;
+Source: "{#IDPDLLDIR}\idp.dll"; Flags: dontcopy noencryption;
 
 [Code]
 procedure idpAddFile(url, filename: String);                     external 'idpAddFile@files:idp.dll cdecl';
@@ -352,13 +352,17 @@ function idpCreateDownloadForm(PreviousPageId: Integer): Integer;
 begin
     IDPForm.Page := CreateCustomPage(PreviousPageId, ExpandConstant('{cm:IDP_FormCaption}'), ExpandConstant('{cm:IDP_FormDescription}'));
 
+    #if SetupSetting("WizardStyle") == ''
+      #error 'The include of Inno Download Plugin need to be done after the [Setup] section.'
+    #endif
+
     IDPForm.TotalProgressBar := TNewProgressBar.Create(IDPForm.Page);
     with IDPForm.TotalProgressBar do
     begin
         Parent := IDPForm.Page.Surface;
         Left := ScaleX(0);
         Top := ScaleY(16);
-        Width := ScaleX(410);
+        if ('{#SetupSetting("WizardStyle")}' = 'modern') then Width := ScaleX(516) else Width := ScaleX(410);
         Height := ScaleY(20);
         Min := 0;
         Max := 100;
@@ -396,7 +400,7 @@ begin
         Parent := IDPForm.Page.Surface;
         Left := ScaleX(0);
         Top := ScaleY(64);
-        Width := ScaleX(410);
+        if ('{#SetupSetting("WizardStyle")}' = 'modern') then Width := ScaleX(516) else Width := ScaleX(410);
         Height := ScaleY(20);
         Min := 0;
         Max := 100;
@@ -407,7 +411,7 @@ begin
     begin
         Parent := IDPForm.Page.Surface;
         Caption := '';
-        Left := ScaleX(290);
+        if ('{#SetupSetting("WizardStyle")}' = 'modern') then Left := ScaleX(396) else Left := ScaleX(290);
         Top := ScaleY(0);
         Width := ScaleX(120);
         Height := ScaleY(14);
@@ -420,7 +424,7 @@ begin
     begin
         Parent := IDPForm.Page.Surface;
         Caption := '';
-        Left := ScaleX(290);
+        if ('{#SetupSetting("WizardStyle")}' = 'modern') then Left := ScaleX(396) else Left := ScaleX(290);
         Top := ScaleY(48);
         Width := ScaleX(120);
         Height := ScaleY(14);
@@ -563,7 +567,7 @@ begin
     begin
         Parent := IDPForm.Page.Surface;
         Caption := ExpandConstant('{cm:IDP_DetailsButton}');
-        Left := ScaleX(336);
+        if ('{#SetupSetting("WizardStyle")}' = 'modern') then Left := ScaleX(442) else Left := ScaleX(336);
         Top := ScaleY(184);
         Width := ScaleX(75);
         Height := ScaleY(23);
